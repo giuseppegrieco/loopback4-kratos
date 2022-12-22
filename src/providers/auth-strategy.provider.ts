@@ -1,10 +1,10 @@
-import { AuthenticationStrategy } from '@loopback/authentication';
-import { inject } from '@loopback/core';
-import { RedirectRoute, Request } from '@loopback/rest';
-import { UserProfile } from '@loopback/security';
+import {AuthenticationStrategy} from '@loopback/authentication';
+import {inject} from '@loopback/core';
+import {RedirectRoute, Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 
-import { KratosComponentBindings } from '../keys';
-import { KratosUserService } from '../services';
+import {KratosComponentBindings} from '../keys';
+import {KratosResponse, KratosUserService} from '../services';
 
 export class KratosAuthenticationStrategy implements AuthenticationStrategy {
   name = 'kratos';
@@ -16,16 +16,15 @@ export class KratosAuthenticationStrategy implements AuthenticationStrategy {
 
   async authenticate(request: Request): Promise<UserProfile | RedirectRoute | undefined> {
     const sessionToken: string | undefined = request.headers.authorization;
-    if(!sessionToken) {
+    if (!sessionToken) {
       return undefined;
     }
 
-    const userId: string | undefined = await this.userService.verifyCredentials(sessionToken);
-    if(!userId) {
+    const userId: KratosResponse | null = await this.userService.verifyCredentials(sessionToken);
+    if (userId == null) {
       return undefined;
     }
 
-    const userProfile = this.userService.convertToUserProfile(userId);
-    return userProfile;
+    return this.userService.convertToUserProfile(userId);
   }
 }

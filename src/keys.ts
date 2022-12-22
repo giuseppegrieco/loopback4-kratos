@@ -1,6 +1,6 @@
-import { BindingKey } from '@loopback/core';
-import { KratosComponent } from './component';
-import { KratosComponentOptions } from './types';
+import {BindingKey} from '@loopback/core';
+import {KratosComponent} from './component';
+import {KratosComponentOptions} from './types';
 
 /**
  * Binding keys used by this component.

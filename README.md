@@ -14,13 +14,11 @@ $ [npm install | yarn add] kratos
 
 ## Basic Use
 
-Configure and load KratosComponent in the application constructor
-as shown below.
-
 ```ts
-import { AuthenticationComponent } from '@loopback/authentication';
+import {AuthenticationComponent} from '@loopback/authentication';
 
-import { KratosComponent, KratosComponentOptions } from 'kratos';
+import {KratosComponent, KratosComponentOptions} from 'kratos';
+
 // ...
 
 export class MyApplication extends BootMixin(
@@ -31,13 +29,21 @@ export class MyApplication extends BootMixin(
 
     this.component(AuthenticationComponent);
 
-    this.component(KratosComponent);
+    this.component(KratosComponent<KratosUserProfile>);
     this.bind(KratosComponentBindings.CONFIG).to({
       baseUrl: 'http://kratos_url',
+      extractUserProfileStrategy: (baseUserProfile: UserProfile, response: KratosResponse) => {
+        let userProfile = baseUserProfile;
+
+        //implements your own extract strategy
+
+        return userProfile;
+      }
     });
 
     // ...
   }
+
   // ...
 }
 ```
@@ -45,8 +51,9 @@ export class MyApplication extends BootMixin(
 After this, you can just use Kratos as authentication strategy across application.
 
 ```ts
-import { authenticate } from '@loopback/authentication';
-import { get } from '@loopback/rest';
+import {authenticate} from '@loopback/authentication';
+import {get} from '@loopback/rest';
+
 // ...
 
 export class YourController {
