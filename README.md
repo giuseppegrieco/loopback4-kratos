@@ -29,7 +29,7 @@ export class MyApplication extends BootMixin(
 
     this.component(AuthenticationComponent);
 
-    this.component(KratosComponent<KratosUserProfile>);
+    this.component(KratosComponent);
     this.bind(KratosComponentBindings.CONFIG).to({
       baseUrl: 'http://kratos_url',
       extractUserProfileStrategy: (baseUserProfile: UserProfile, response: KratosResponse) => {

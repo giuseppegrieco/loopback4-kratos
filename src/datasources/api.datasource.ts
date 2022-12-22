@@ -1,7 +1,7 @@
-import { lifeCycleObserver, LifeCycleObserver } from '@loopback/core';
-import { juggler } from '@loopback/repository';
+import {lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
+import {juggler} from '@loopback/repository';
 
-import { KratosComponentOptions } from '../types';
+import {KratosComponentOptions} from '../types';
 
 @lifeCycleObserver('datasource')
 export class KratosAPI extends juggler.DataSource
@@ -21,14 +21,14 @@ export class KratosAPI extends juggler.DataSource
             fullResponse: false,
             url: options.baseUrl + '/api/kratos/public/sessions/whoami',
             headers: {
-              'X-Session-Token': '{sessionToken}'
+              'Authorization': '{sessionToken}',
             },
           },
           functions: {
-            'whoAmI': ['sessionToken']
-          }
-        }
-      ]
+            'whoAmI': ['sessionToken'],
+          },
+        },
+      ],
     });
   }
 }

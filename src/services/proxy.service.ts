@@ -8,45 +8,71 @@ import {KratosComponentOptions} from '../types';
 
 
 export type KratosResponse = {
+  id: string,
+  active: boolean,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  expires_at: string,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  authenticated_at: string,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  authenticator_assurance_level: string,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  authentication_methods: Array<{
+    [prop: string]: string | number
+  }>,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  issued_at: string,
+  identity: {
     id: string,
-    active: boolean,
-    expires_at: string,
-    authenticated_at: string,
-    authenticator_assurance_level: string,
-    authentication_methods: Array<Object>,
-    issued_at: string,
-    identity: {
-        id: string,
-        schema_id: string,
-        state: string,
-        state_changed_at: string,
-        traits: Object,
-        verifiable_addresses?: Array<{
-            id: string,
-            value: string,
-            verified: boolean,
-            via: string,
-            status: string,
-            created_at: string,
-            updated_at: string
-        }>,
-        recovery_addresses?: Array<{
-            id: string,
-            value: string,
-            via: string,
-            created_at: string,
-            updated_at: string
-        }>
-        metadata_public?: Object
-        created_at: string
-        updated_at: string
-    }
-    devices: Array<{
-        id: string,
-        ip_address: string,
-        user_agent: string,
-        location: string
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    schema_id: string,
+    state: string,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    state_changed_at: string,
+    traits: {
+      [prop: string]: string | number | boolean | {
+        [prop: string]: string | number | boolean
+      }
+    },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    verifiable_addresses?: Array<{
+      id: string,
+      value: string,
+      verified: boolean,
+      via: string,
+      status: string,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      created_at: string,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      updated_at: string
+    }>,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    recovery_addresses?: Array<{
+      id: string,
+      value: string,
+      via: string,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      created_at: string,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      updated_at: string
     }>
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    metadata_public?: {
+      [prop: string]: string | number
+    } | null | string,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    created_at: string
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    updated_at: string
+  }
+  devices: Array<{
+    id: string,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ip_address: string,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    user_agent: string,
+    location: string
+  }>
 }
 
 export interface KratosProxy {
