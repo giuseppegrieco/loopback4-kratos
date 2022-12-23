@@ -1,0 +1,64 @@
+{
+    "name": "loopback4-kratos",
+    "version": "1.0.0",
+    "description": "A simple Ory Kratos integration in loopback4 applications",
+    "keywords": [
+        "loopback-extension",
+        "loopback",
+        "loopback-kratos"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "engines": {
+        "node": "15 || 16 || 17 || 18"
+    },
+    "scripts": {
+        "build": "lb-tsc",
+        "build:watch": "lb-tsc --watch",
+        "lint": "npm run eslint && npm run prettier:check",
+        "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+        "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+        "prettier:check": "npm run prettier:cli -- -l",
+        "prettier:fix": "npm run prettier:cli -- --write",
+        "eslint": "lb-eslint --report-unused-disable-directives .",
+        "eslint:fix": "npm run eslint -- --fix",
+        "pretest": "npm run rebuild",
+        "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+        "posttest": "npm run lint",
+        "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+        "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+        "rebuild": "npm run clean && npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/giuseppegrieco/loopback4-kratos"
+    },
+    "author": "Giuseppe Grieco <g.grieco1997@gmail.com>",
+    "license": "GPL-3.0",
+    "files": [
+        "README.md",
+        "dist",
+        "src",
+        "!*/__tests__"
+    ],
+    "peerDependencies": {
+        "@loopback/core": "^4.0.3"
+    },
+    "dependencies": {
+        "@loopback/authentication": "^9.0.3",
+        "@loopback/rest": "^12.0.3",
+        "@loopback/service-proxy": "^5.0.3",
+        "loopback-connector-rest": "^4.0.2",
+        "tslib": "^2.0.0"
+    },
+    "devDependencies": {
+        "@loopback/build": "^9.0.3",
+        "@loopback/core": "^4.0.3",
+        "@loopback/eslint-config": "^13.0.3",
+        "@loopback/testlab": "^5.0.3",
+        "@types/node": "^14.18.26",
+        "eslint": "^8.22.0",
+        "source-map-support": "^0.5.21",
+        "typescript": "~4.7.4"
+    }
+}
