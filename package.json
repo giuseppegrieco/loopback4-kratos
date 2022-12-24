@@ -1,6 +1,6 @@
 {
     "name": "loopback4-kratos",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A simple Ory Kratos integration in loopback4 applications",
     "keywords": [
         "loopback-extension",
@@ -10,7 +10,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "engines": {
-        "node": "15 || 16 || 17 || 18"
+        "node": "15 || 16 || 18 || 17 || 19"
     },
     "scripts": {
         "build": "lb-tsc",
