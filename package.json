@@ -1,6 +1,6 @@
 {
     "name": "loopback4-kratos",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A simple Ory Kratos integration in loopback4 applications",
     "keywords": [
         "loopback-extension",
@@ -10,7 +10,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "engines": {
-        "node": "15 || 16 || 17 || 18"
+        "node": "15 || 16 || 18 || 17 || 19"
     },
     "scripts": {
         "build": "lb-tsc",
@@ -48,6 +48,7 @@
         "@loopback/authentication": "^9.0.3",
         "@loopback/rest": "^12.0.3",
         "@loopback/service-proxy": "^5.0.3",
+        "@ory/kratos-client": "^0.11.0",
         "loopback-connector-rest": "^4.0.2",
         "tslib": "^2.0.0"
     },

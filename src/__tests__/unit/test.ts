@@ -1,7 +1,7 @@
-import {Client, createClientForHandler} from '@loopback/testlab';
+import {Client, createClientForHandler, expect} from '@loopback/testlab';
 import {RestServer} from '@loopback/rest';
 import {Application} from '@loopback/core';
-import createApplication from './helper';
+import createApplication, {kratosTestResponse} from './helper';
 
 /**
  * Testing overall flow of authentication with kratos
@@ -23,6 +23,17 @@ describe('Test Kratos Authorization Flow', () => {
       .get('/test')
       .set('Authorization', 'Bearer of18SyPbs3Odsa23adfFASDASDA31D12')
       .expect(200);
+  });
+
+  it('Checks user profile information', async () => {
+    const ans = await whenIMakeRequestTo(server)
+      .get('/test')
+      .set('Authorization', 'Bearer of18SyPbs3Odsa23adfFASDASDA31D12')
+      .expect(200);
+    const traits = kratosTestResponse.identity.traits;
+    expect(ans.body.name).to.equal(traits.name);
+    expect(ans.body.email).to.equal(traits.email);
+    expect(ans.body.username).to.equal(traits.username);
   });
 
   function whenIMakeRequestTo(restServer: RestServer): Client {
