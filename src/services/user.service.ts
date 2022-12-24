@@ -1,24 +1,17 @@
 import {UserService} from '@loopback/authentication';
-import {BindingScope, inject, injectable} from '@loopback/core';
+import {inject} from '@loopback/core';
 import {securityId, UserProfile} from '@loopback/security';
 
 import {KratosComponentBindings} from '../keys';
-import {KratosProxy, KratosResponse} from './proxy.service';
-import {KratosComponentOptions} from '../types';
+import {KratosProxy} from './proxy.service';
+import {Session} from '@ory/kratos-client';
 
-@injectable({scope: BindingScope.TRANSIENT})
-export class KratosUserService
-  implements UserService<KratosResponse | null, string>
-{
+export class KratosUserService implements UserService<Session | null, string> {
   constructor(
     @inject(KratosComponentBindings.PROXY.key) private proxy: KratosProxy,
-    @inject(KratosComponentBindings.CONFIG)
-    private config: KratosComponentOptions,
   ) {}
 
-  async verifyCredentials(
-    sessionToken: string,
-  ): Promise<KratosResponse | null> {
+  async verifyCredentials(sessionToken: string): Promise<Session | null> {
     try {
       const res = await this.proxy.whoAmI(sessionToken);
       if (res.active) {
@@ -30,10 +23,9 @@ export class KratosUserService
     }
   }
 
-  convertToUserProfile(response: KratosResponse): UserProfile {
-    const ans = {
+  convertToUserProfile(response: Session): UserProfile {
+    return {
       [securityId]: response.id,
     };
-    return this.config.extractUserProfileStrategy(ans, response);
   }
 }
