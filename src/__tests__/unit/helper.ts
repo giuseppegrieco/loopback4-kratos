@@ -5,8 +5,11 @@ import {
   AuthenticationBindings,
   AuthenticationComponent,
 } from '@loopback/authentication';
-import {KratosComponent} from '../../component';
-import {KratosComponentBindings} from '../../keys';
+import {
+  KratosComponentBindings,
+  KratosComponent,
+  KratosUserService,
+} from '../../';
 import {UserProfile} from '@loopback/security';
 import {KratosProxy} from '../../services';
 import {Session} from '@ory/kratos-client';
@@ -35,6 +38,16 @@ class KratosProxyTest implements KratosProxy {
   }
 }
 
+class MyUserService extends KratosUserService {
+  convertToUserProfile(response: Session): UserProfile {
+    const ans = super.convertToUserProfile(response);
+    ans.email = response.identity.traits.email;
+    ans.name = response.identity.traits.name;
+    ans.username = response.identity.traits.username;
+    return ans;
+  }
+}
+
 export default function createApplication() {
   const app = new Application();
   app.component(RestComponent);
@@ -42,19 +55,10 @@ export default function createApplication() {
   app.component(AuthenticationComponent);
 
   app.component(KratosComponent);
-  app.bind(KratosComponentBindings.CONFIG).to({
+  app.bind(KratosComponentBindings.CONFIG.key).to({
     baseUrl: 'not used for testing',
-    extractUserProfileStrategy: (
-      baseUserProfile: UserProfile,
-      response: Session,
-    ) => {
-      const userProfile = baseUserProfile;
-
-      userProfile.username = response.identity.traits.username;
-
-      return userProfile;
-    },
   });
+  app.bind(KratosComponentBindings.USER_SERVICE.key).toClass(MyUserService);
 
   app.controller(KratosTestController);
 
@@ -63,7 +67,7 @@ export default function createApplication() {
   return app;
 }
 
-const kratosTestResponse: Session = {
+export const kratosTestResponse: Session = {
   id: '65dea6f4-5d15-4e61-9eb7-f30190c0b2e2',
   active: true,
   // eslint-disable-next-line @typescript-eslint/naming-convention

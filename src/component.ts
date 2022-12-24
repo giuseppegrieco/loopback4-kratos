@@ -4,7 +4,6 @@ import {
   ContextTags,
   Binding,
   Component,
-  ProviderMap,
   inject,
   CoreBindings,
   Application,
@@ -17,20 +16,18 @@ import {KratosProxyProvider, KratosUserService} from './services';
 // Configure the binding for KratosComponent
 @injectable({tags: {[ContextTags.KEY]: KratosComponentBindings.COMPONENT}})
 export class KratosComponent implements Component {
+  bindings: Binding[] = [
+    Binding.bind(KratosComponentBindings.PROXY.key).toProvider(
+      KratosProxyProvider,
+    ),
+    Binding.bind(KratosComponentBindings.USER_SERVICE.key).toClass(
+      KratosUserService,
+    ),
+  ];
+
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE) private application: Application,
   ) {
-    this.bindings.push(
-      Binding.bind(KratosComponentBindings.PROXY.key).toProvider(
-        KratosProxyProvider,
-      ),
-    );
-    this.bindings.push(
-      Binding.bind(KratosComponentBindings.USER_SERVICE.key).toInjectable(
-        KratosUserService,
-      ),
-    );
-
     /**
      * Register kratos as an authentication strategy.
      *
@@ -38,7 +35,4 @@ export class KratosComponent implements Component {
      */
     registerAuthenticationStrategy(application, KratosAuthenticationStrategy);
   }
-
-  providers?: ProviderMap;
-  bindings: Binding[] = [];
 }
