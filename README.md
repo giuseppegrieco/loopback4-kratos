@@ -19,6 +19,7 @@ $ [npm install | yarn add] loopback4-kratos
 import {AuthenticationComponent} from '@loopback/authentication';
 
 import {KratosComponent, KratosComponentOptions} from 'kratos';
+import {Session} from '@ory/kratos-client';
 
 // ...
 
@@ -33,7 +34,7 @@ export class MyApplication extends BootMixin(
     this.component(KratosComponent);
     this.bind(KratosComponentBindings.CONFIG).to({
       baseUrl: 'http://kratos_url',
-      extractUserProfileStrategy: (baseUserProfile: UserProfile, response: KratosResponse) => {
+      extractUserProfileStrategy: (baseUserProfile: UserProfile, response: Session) => {
         let userProfile = baseUserProfile;
 
         //implements your own extract strategy

@@ -2,9 +2,10 @@ import {AuthenticationStrategy} from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {RedirectRoute, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
+import {Session} from '@ory/kratos-client';
 
 import {KratosComponentBindings} from '../keys';
-import {KratosResponse, KratosUserService} from '../services';
+import {KratosUserService} from '../services';
 
 export class KratosAuthenticationStrategy implements AuthenticationStrategy {
   name = 'kratos';
@@ -22,8 +23,9 @@ export class KratosAuthenticationStrategy implements AuthenticationStrategy {
       return undefined;
     }
 
-    const userId: KratosResponse | null =
-      await this.userService.verifyCredentials(sessionToken);
+    const userId: Session | null = await this.userService.verifyCredentials(
+      sessionToken,
+    );
     if (userId == null) {
       return undefined;
     }

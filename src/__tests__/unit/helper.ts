@@ -8,7 +8,8 @@ import {
 import {KratosComponent} from '../../component';
 import {KratosComponentBindings} from '../../keys';
 import {UserProfile} from '@loopback/security';
-import {KratosProxy, KratosResponse} from '../../services';
+import {KratosProxy} from '../../services';
+import {Session} from '@ory/kratos-client';
 
 class KratosTestController {
   constructor(
@@ -24,9 +25,9 @@ class KratosTestController {
 }
 
 class KratosProxyTest implements KratosProxy {
-  whoAmI(sessionToken: string): Promise<KratosResponse> {
+  whoAmI(sessionToken: string): Promise<Session> {
     if (sessionToken === 'Bearer of18SyPbs3Odsa23adfFASDASDA31D12') {
-      return new Promise<KratosResponse>((resolve, reject) => {
+      return new Promise<Session>((resolve, _) => {
         resolve(kratosTestResponse);
       });
     }
@@ -45,7 +46,7 @@ export default function createApplication() {
     baseUrl: 'not used for testing',
     extractUserProfileStrategy: (
       baseUserProfile: UserProfile,
-      response: KratosResponse,
+      response: Session,
     ) => {
       const userProfile = baseUserProfile;
 
@@ -62,7 +63,7 @@ export default function createApplication() {
   return app;
 }
 
-const kratosTestResponse: KratosResponse = {
+const kratosTestResponse: Session = {
   id: '65dea6f4-5d15-4e61-9eb7-f30190c0b2e2',
   active: true,
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -84,6 +85,8 @@ const kratosTestResponse: KratosResponse = {
   issued_at: '2022-12-01T13:50:30.427292Z',
   identity: {
     id: '969d7a6e-b8a9-49ea-bf7b-9e2732a41a81',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    schema_url: 'test value',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     schema_id:
       '9cadbdf1d6bc5c5c521a1c17ea83648c911c5cd74a14d9e6cc11a5790d133339c3524f8a2d35d34f4151d2df10a7b73d19f7bd0f709fd5ace9019e080bbc4df6',

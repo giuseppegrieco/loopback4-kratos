@@ -48,6 +48,7 @@
         "@loopback/authentication": "^9.0.3",
         "@loopback/rest": "^12.0.3",
         "@loopback/service-proxy": "^5.0.3",
+        "@ory/kratos-client": "^0.11.0",
         "loopback-connector-rest": "^4.0.2",
         "tslib": "^2.0.0"
     },
