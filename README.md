@@ -18,8 +18,10 @@ $ [npm install | yarn add] loopback4-kratos
 ```ts
 import {AuthenticationComponent} from '@loopback/authentication';
 
-import {KratosComponent, KratosComponentOptions} from 'kratos';
-import {Session} from '@ory/kratos-client';
+import {
+  KratosComponentBindings,
+  KratosComponent,
+} from 'loopback4-kratos';
 
 // ...
 
@@ -33,17 +35,39 @@ export class MyApplication extends BootMixin(
 
     this.component(KratosComponent);
     this.bind(KratosComponentBindings.CONFIG).to({
-      baseUrl: 'http://kratos_url',
-      extractUserProfileStrategy: (baseUserProfile: UserProfile, response: Session) => {
-        let userProfile = baseUserProfile;
-
-        //implements your own extract strategy
-
-        return userProfile;
-      }
+      baseUrl: 'http://kratos_url'
     });
+    
+    // To register a custom user service
+    this.bind(KratosComponentBindings.USER_SERVICE.key).toClass(
+      MyUserService
+    );
 
     // ...
+  }
+
+  // ...
+}
+```
+
+It is therefore necessary to define a new user service:
+```ts
+import {UserProfile} from '@loopback/security';
+
+import {
+  KratosUserService
+} from 'loopback4-kratos';
+import {Session} from '@ory/kratos-client';
+
+// ...
+
+export class MyUserService extends KratosUserService {
+  convertToUserProfile(response: Session): UserProfile {
+    const ans = super.convertToUserProfile(response);
+    
+    // Implement your strategy ...
+    
+    return ans;
   }
 
   // ...
